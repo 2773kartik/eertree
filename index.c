@@ -1,6 +1,5 @@
 /*  
 Project:- EERTREE implementation and applications
-
 Authors:- 
     Sahil 2021CSB1128
     Kartik Tiwari 2021CSB1102
@@ -73,14 +72,21 @@ int insert(char *s, int pos)
     }
 
     //If the edge already exists between the nodes new node is not created
-    
+    Suffix[pos] = 1;
     if (cur->label[letter] != NULL)
     {
         palSuf[pos]=cur->label[letter];
         current = cur->label[letter];
         current->occ++;
-        NODE *temp = current->suffix;
 
+        NODE* temp = current;
+        while (temp->start != -1)
+        {
+            Prefix[pos - temp->end + temp->start]++;
+            temp = temp->suffix;
+        }
+
+        temp = current->suffix;
         //Occurrence of all suffix palindromes of current string is incremented by 1 
         //by iterating suffix links starting from longest suffix palindrome
         while (temp != root1 && temp != root2)
@@ -88,6 +94,7 @@ int insert(char *s, int pos)
             temp->occ++;
             temp = temp->suffix;
         }
+
         return 0;
     }
 
